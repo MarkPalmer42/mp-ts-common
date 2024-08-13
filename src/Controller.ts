@@ -4,12 +4,12 @@ import LogSanitizer from './LogSanitizer';
 
 const LogIncoming = (method: string, request: string, content: object) =>
 {
-    Log.Debug(`<-- ${method} ${request} ${LogSanitizer(content)}`);
+    Log.Info(`<-- ${method} ${request} ${LogSanitizer(content)}`);
 }
 
 const LogOutgoing = (status: number, response: object) =>
 {
-    Log.Debug(`--> ${status} ${LogSanitizer(response)}`);
+    Log.Info(`--> ${status} ${LogSanitizer(response)}`);
 }
 
 const SendResponse = (res: any, response: object, statusCode: number) =>

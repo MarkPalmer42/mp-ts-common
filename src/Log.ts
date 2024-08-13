@@ -6,7 +6,7 @@ import moment from 'moment';
 
 function format()
 {
-    return winston.format.printf(info => `[${moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')}] ${info.level}: ${info.message}`);
+    return winston.format.printf(info => `[${moment(Date.now()).format('YYYY-MM-DD HH:mm:ss.SSS')}] ${info.level}: ${info.message}`);
 }
 
 function getFileAndLine(offset=4)
@@ -20,15 +20,18 @@ function getFileAndLine(offset=4)
     return splitFile[splitFile.length - 1];
 }
 
-function logMessage(level: string, message: string | object) : string
+function logMessage(message: string | object) : string
 {
+    const fileAndLine = getFileAndLine();
+    const appendedFileAndLine = fileAndLine !== "" ? ` (${fileAndLine})` : "";
+
     if(typeof message === 'object')
     {
-        return `${JSON.stringify(message)} (${getFileAndLine()})`;
+        return `${JSON.stringify(message)}${appendedFileAndLine}`;
     }
     else
     {
-        return `${message} (${getFileAndLine()})`;
+        return `${message}${appendedFileAndLine}`;
     }
 }
 
@@ -61,22 +64,22 @@ class LogClass
 
     Debug(message : string) : void
     {
-        this._logger?.debug(logMessage('debug', message))
+        this._logger?.debug(logMessage(message))
     }
 
     Info(message : string) : void
     {
-        this._logger?.info(logMessage('info', message));
+        this._logger?.info(logMessage(message));
     }
 
     Warning(message : string) : void
     {
-        this._logger?.warn(logMessage('warn', message));
+        this._logger?.warn(logMessage(message));
     }
 
     Error(message : string) : void
     {
-        this._logger?.error(logMessage('error', message));
+        this._logger?.error(logMessage(message));
     }
 
 }
