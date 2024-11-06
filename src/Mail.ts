@@ -78,13 +78,17 @@ class Mail
 
                 if(this._mailProvider === "sg")
                 {
-                    sgMail
-                    .send(mail_options as MailDataRequired)
-                    .then(() => {}, (error: any) =>
-                    {
-                        Log.Info(`Email sent with sg:`)
-                        Log.Info(error);
-                    });
+                    (async () => {
+                        try
+                        {
+                            await sgMail.send(mail_options as MailDataRequired);
+                            Log.Info('(SG) Email sent successfully.');
+                        }
+                        catch(error: any)
+                        {
+                            Log.Info(`(SG) Error sending email: ${JSON.stringify(error)}`);
+                        }
+                    })();
                 }
                 else
                 {
